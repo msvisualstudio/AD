@@ -1,2 +1,2 @@
 # AD
-Inactive User Report 
+Useful AD scripts for sys admins
