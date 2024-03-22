@@ -6,9 +6,14 @@ Import-Module ActiveDirectory
 
 #first name
 $firstName = Read-Host "Wprowadź imię użytkownika"
+#Capitalize the first letter of first name
+$capitalizeFirstName = $firstName.Substring(0,1).ToUpper() + $firstName.Substring(1)
 
 #last name
 $lastName = Read-Host "Wprowadź nazwisko użytkownika"
+
+#Capitalize the first letter of last name
+$capitalizeLastName = $lastName.Substring(0,1).ToUpper() + $lastName.Substring(1)
 
 #username
 $username = $firstName.Substring(0,1).ToLower() + $lastName.ToLower()
@@ -31,22 +36,20 @@ $jobtitle = Read-Host "Wprowadz stanowisko"
 
 #-------------------Program--------------------------#
 
-# Create the user in the OU
+# Create the user in the Organizational Unit
 
-New-ADUser -Name "$firstName $lastName" `
-	-GivenName $firstName -Surname $lastName `
+New-ADUser -Name "$capitalizeFirstName $capitalizeLastName" `
+	-GivenName $capitalizeFirstName -Surname $capitalizeLastName `
     -SamAccountName $username `
     -UserPrincipalName "$username@torpoloilgas.pl" `
 	-AccountPassword $password `
 	-Path "LDAP://$childOu" `
 	-Enabled $true `
 	-EmailAddress $email `
-	-DisplayName "$firstName $lastName" `
+	-DisplayName "$capitalizeFirstName $capitalizeLastName" `
 	-Company "Torpol Oil & Gas Sp. z o.o." `
     -Title $jobtitle `
 
 # Add the user to the security group 
 # BY DEFAULT PRACOWNICY
 Add-ADGroupMember -Identity $group -Members $username
-
-
